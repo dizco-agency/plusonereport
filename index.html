@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plus One Advisory — Performance Reports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#eef3f8; --card:#ffffff;
+    --navy:#0F1E33; --blue:#155F7D; --navy2:#2596BE; --navy-tint:#e3eef4;
+    --accent:#0E9E88; --accent-tint:#e2f4ef;
+    --ink:#0F1E33; --mut:#5f748f; --mut2:#93a6bf; --line:#e2e9f2;
+    --shadow:0 2px 4px rgba(15,30,51,.05), 0 12px 32px rgba(15,30,51,.09);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    background:var(--bg); color:var(--ink); min-height:100vh; -webkit-font-smoothing:antialiased;
+    padding:clamp(28px,6vw,68px) clamp(20px,6vw,60px);
+  }
+  .wrap{max-width:840px;margin:0 auto}
+  .top{display:flex;align-items:center;gap:12px;margin-bottom:40px}
+  .logo{width:44px;height:44px;border-radius:13px;background:linear-gradient(150deg,#0F1E33,#155F7D);position:relative;flex:none;box-shadow:0 6px 16px rgba(21,95,125,.28)}
+  .logo::before{content:"+";position:absolute;left:11px;top:50%;transform:translateY(-52%);color:#fff;font-size:22px;font-weight:800;line-height:1}
+  .logo::after{content:"";position:absolute;right:9px;top:9px;width:12px;height:12px;border-radius:4px;background:var(--navy2)}
+  .wm{font-size:20px;font-weight:800;letter-spacing:-.3px}
+  .wm b{color:var(--navy);font-weight:800}
+  .wm span{color:var(--navy2);font-weight:800}
+  .byline{margin-left:2px;font-size:11.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:#0a7d6b;background:var(--accent-tint);padding:5px 10px;border-radius:999px}
+  h1{font-size:clamp(30px,5.5vw,44px);font-weight:800;letter-spacing:-1.2px;color:var(--navy);line-height:1.05;margin-bottom:8px}
+  .sub{color:var(--mut);font-size:15px;margin-bottom:34px}
+  .sec{font-size:12px;letter-spacing:2px;color:var(--mut2);font-weight:700;text-transform:uppercase;margin-bottom:16px}
+  .month{background:var(--card);border:1px solid var(--line);border-radius:18px;margin-bottom:16px;overflow:hidden;box-shadow:var(--shadow);transition:box-shadow .2s,border-color .2s}
+  .month.open{border-color:#c7d8ec}
+  .mhead{display:flex;align-items:center;gap:18px;padding:20px 22px;cursor:pointer;user-select:none;flex-wrap:wrap}
+  .month.soon .mhead{cursor:default}
+  .cal{width:58px;height:58px;flex:none;border-radius:14px;background:linear-gradient(150deg,#0F1E33,#155F7D);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;box-shadow:0 5px 14px rgba(21,95,125,.24)}
+  .cal.gray{background:#e8eef7;color:var(--mut2);box-shadow:none}
+  .cal b{font-size:23px;font-weight:800;line-height:1}
+  .cal i{font-size:10.5px;font-style:normal;letter-spacing:1.2px;text-transform:uppercase;margin-top:3px;font-weight:600;color:#a9d8ec}
+  .cal.gray i{color:var(--mut2)}
+  .minfo{flex:1;min-width:180px}
+  .minfo h3{font-size:20px;font-weight:700;color:var(--navy)}
+  .minfo p{color:var(--mut);font-size:14px;margin-top:3px}
+  .tags{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .tag{font-size:12px;font-weight:600;padding:5px 11px;border-radius:8px}
+  .tag.blue{background:var(--navy-tint);color:var(--blue)}
+  .tag.accent{background:var(--accent-tint);color:#0a7d6b}
+  .pill{font-size:12px;font-weight:600;padding:6px 12px;border-radius:999px;background:var(--navy-tint);color:var(--blue);flex:none}
+  .pill.soon{background:#e8eef7;color:var(--mut2)}
+  .chev{color:var(--mut2);font-size:20px;transition:transform .25s;flex:none;font-weight:700}
+  .month.open .chev{transform:rotate(180deg);color:var(--accent)}
+  .weeks{max-height:0;overflow:hidden;transition:max-height .32s ease}
+  .month.open .weeks{max-height:720px}
+  .wk{display:flex;align-items:center;gap:14px;padding:16px 22px 16px 26px;border-top:1px solid var(--line);text-decoration:none;color:inherit}
+  .wk.live:hover{background:#eafaf6}
+  .wdot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none}
+  .wdot.off{background:#cdd8e6}
+  .wk .wt{flex:1;font-size:15.5px;font-weight:600;color:var(--navy)}
+  .wk.off .wt{color:var(--mut)}
+  .wk .wsub{color:var(--mut2);font-size:13px;font-weight:400;margin-left:7px}
+  .go{font-size:13.5px;font-weight:700;color:#fff;background:var(--accent);padding:8px 15px;border-radius:9px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+  .wk.live:hover .go{background:#0b7d6c}
+  .soonlab{font-size:12px;color:var(--mut2);font-weight:600}
+  .foot{margin-top:38px;padding-top:22px;border-top:1px solid var(--line);color:var(--mut);font-size:13px;line-height:1.6;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .foot .lk{display:inline-flex;align-items:center;gap:6px;color:var(--blue);font-weight:600}
+  .dot{width:3px;height:3px;border-radius:50%;background:var(--mut2)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="logo"></div>
+    <div class="wm"><b>Plus One</b> <span>Advisory</span></div>
+    <span class="byline">by DIZCO</span>
+  </div>
+  <h1>Performance Reports</h1>
+  <div class="sub">Laporan performa Meta Ads &amp; consultation leads Plus One Advisory — interaktif, per bulan.</div>
+  <div class="sec">Daftar Bulan</div>
+  <!-- Bulan dirender otomatis oleh JS di bawah. Cukup upload file report ke folder bulan
+       (mis. september/monthly.html); index ini bakal deteksi sendiri file mana yang ada
+       dan aktifin tombolnya. Nambah bulan baru? tambahin 1 objek di array MONTHS. -->
+  <div id="months"></div>
+  <div class="foot">
+    <span class="lk">Plus One Advisory × DIZCO</span>
+    <span class="dot"></span>
+    <span>Laporan interaktif — buka di browser</span>
+    <span class="dot"></span>
+    <span>Data bersifat rahasia</span>
+  </div>
+</div>
+<script>
+  /* =========================================================================
+     KONFIG BULAN & REPORT
+     -------------------------------------------------------------------------
+     Cukup upload file report ke folder bulan (mis. september/monthly.html).
+     Index otomatis ngecek file mana yang ada -> aktifin tombol "Buka report".
+     Nambah bulan baru? tambahin 1 objek di array MONTHS di bawah.
+     ========================================================================= */
+  var MONTHS = [
+    { id:'m-agu', folder:'agustus', cal:'08', mon:'Agu', title:'Agustus 2026',
+      desc:'Laporan performa bulanan',
+      tags:[{c:'blue',t:'Meta Ads · Consultation Leads · Threads'}],
+      weeks:[
+        {t:'Laporan Bulanan', s:'Agustus 2026', f:'monthly.html'}
+      ]},
+    { id:'m-sep', folder:'september', cal:'09', mon:'Sep', title:'September 2026',
+      desc:'Laporan performa bulanan',
+      tags:[{c:'blue',t:'Meta Ads · Consultation Leads · Threads'}],
+      weeks:[
+        {t:'Laporan Bulanan', s:'September 2026', f:'monthly.html'}
+      ]},
+    { id:'m-okt', folder:'oktober', cal:'10', mon:'Okt', title:'Oktober 2026',
+      desc:'Laporan performa bulanan',
+      tags:[{c:'blue',t:'Meta Ads · Consultation Leads · Threads'}],
+      weeks:[
+        {t:'Laporan Bulanan', s:'Oktober 2026', f:'monthly.html'}
+      ]}
+  ];
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function exists(url){
+    return fetch(url,{method:'HEAD',cache:'no-store'})
+      .then(function(r){return r.ok;})
+      .catch(function(){return false;});
+  }
+  function tog(id){
+    var el=document.getElementById(id);
+    if(el.classList.contains('soon'))return;
+    el.classList.toggle('open');
+  }
+  function buildMonth(m){
+    var wrap=document.createElement('div');
+    wrap.className='month soon'; wrap.id=m.id;
+    var tagsHTML = m.tags.map(function(g){return '<span class="tag '+g.c+'">'+esc(g.t)+'</span>';}).join('');
+    var weeksHTML = m.weeks.map(function(w,i){
+      return '<div class="wk off" data-i="'+i+'">'+
+               '<span class="wdot off"></span>'+
+               '<span class="wt">'+esc(w.t)+'<span class="wsub">'+esc(w.s)+'</span></span>'+
+               '<span class="soonlab">Segera</span>'+
+             '</div>';
+    }).join('');
+    wrap.innerHTML =
+      '<div class="mhead" onclick="tog(\''+m.id+'\')">'+
+        '<div class="cal gray"><b>'+esc(m.cal)+'</b><i>'+esc(m.mon)+'</i></div>'+
+        '<div class="minfo">'+
+          '<h3>'+esc(m.title)+'</h3>'+
+          '<p>'+esc(m.desc)+'</p>'+
+          '<div class="tags">'+tagsHTML+'</div>'+
+        '</div>'+
+        '<span class="pill soon">Segera</span>'+
+        '<span class="chev">⌄</span>'+
+      '</div>'+
+      '<div class="weeks">'+weeksHTML+'</div>';
+    return wrap;
+  }
+  function upgradeWeek(monthEl, w, i){
+    var row=monthEl.querySelector('.wk[data-i="'+i+'"]');
+    if(!row)return;
+    var a=document.createElement('a');
+    a.className='wk live'; a.href=w.href;
+    a.innerHTML='<span class="wdot"></span>'+
+                '<span class="wt">'+esc(w.t)+'<span class="wsub">'+esc(w.s)+'</span></span>'+
+                '<span class="go">Buka report →</span>';
+    row.replaceWith(a);
+  }
+  function finalizeMonth(monthEl, liveCount){
+    var cal=monthEl.querySelector('.cal');
+    var pill=monthEl.querySelector('.pill');
+    if(liveCount>0){
+      monthEl.classList.remove('soon');
+      cal.classList.remove('gray');
+      pill.classList.remove('soon');
+      pill.textContent = liveCount+' report siap';
+    }else{
+      pill.textContent='Segera';
+    }
+  }
+  (function build(){
+    var host=document.getElementById('months');
+    var jobs=[];
+    var monthLive=[];
+    MONTHS.forEach(function(m,mi){
+      var el=buildMonth(m);
+      host.appendChild(el);
+      monthLive[mi]=0;
+      m.weeks.forEach(function(w,i){
+        var url=m.folder+'/'+w.f;
+        jobs.push(
+          exists(url).then(function(ok){
+            if(ok){ w.href=url; upgradeWeek(el,w,i); monthLive[mi]++; }
+          })
+        );
+      });
+    });
+    Promise.all(jobs).then(function(){
+      var openIdx=-1;
+      MONTHS.forEach(function(m,mi){
+        var el=document.getElementById(m.id);
+        finalizeMonth(el, monthLive[mi]);
+        if(monthLive[mi]>0) openIdx=mi;
+      });
+      if(openIdx>=0){ document.getElementById(MONTHS[openIdx].id).classList.add('open'); }
+      else { document.getElementById(MONTHS[0].id).classList.add('open'); }
+    });
+  })();
+</script>
+</body>
+</html>
