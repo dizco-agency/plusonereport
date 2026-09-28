@@ -82,8 +82,8 @@
   <div class="sub">Laporan performa Meta Ads &amp; consultation leads Plus One Advisory — interaktif, per bulan.</div>
   <div class="sec">Daftar Bulan</div>
   <!-- Bulan dirender otomatis oleh JS di bawah. Cukup upload file report ke folder bulan
-       (mis. september/monthly.html); index ini bakal deteksi sendiri file mana yang ada
-       dan aktifin tombolnya. Nambah bulan baru? tambahin 1 objek di array MONTHS. -->
+       (mis. september/week-4.html); index ini bakal deteksi sendiri file mana yang ada
+       dan aktifin tombolnya. Nambah bulan/week baru? edit array MONTHS. -->
   <div id="months"></div>
   <div class="foot">
     <span class="lk">Plus One Advisory × DIZCO</span>
@@ -97,9 +97,10 @@
   /* =========================================================================
      KONFIG BULAN & REPORT
      -------------------------------------------------------------------------
-     Cukup upload file report ke folder bulan (mis. september/monthly.html).
+     Cukup upload file report ke folder bulan (mis. september/week-4.html).
      Index otomatis ngecek file mana yang ada -> aktifin tombol "Buka report".
      Nambah bulan baru? tambahin 1 objek di array MONTHS di bawah.
+     Report per 2 minggu? isi array weeks dengan Week 2 & Week 4.
      ========================================================================= */
   var MONTHS = [
     { id:'m-agu', folder:'agustus', cal:'08', mon:'Agu', title:'Agustus 2026',
@@ -109,10 +110,11 @@
         {t:'Laporan Bulanan', s:'Agustus 2026', f:'monthly.html'}
       ]},
     { id:'m-sep', folder:'september', cal:'09', mon:'Sep', title:'September 2026',
-      desc:'Laporan performa bulanan',
-      tags:[{c:'blue',t:'Meta Ads · Consultation Leads · Threads'}],
+      desc:'Laporan performa per 2 minggu',
+      tags:[{c:'blue',t:'Meta Ads · Form Registrasi · Consultation Leads'}],
       weeks:[
-        {t:'Laporan Bulanan', s:'September 2026', f:'monthly.html'}
+        {t:'Week 2', s:'1–22 September 2026', f:'week-2.html'},
+        {t:'Week 4', s:'Rekap akhir September 2026', f:'week-4.html'}
       ]},
     { id:'m-okt', folder:'oktober', cal:'10', mon:'Okt', title:'Oktober 2026',
       desc:'Laporan performa bulanan',
